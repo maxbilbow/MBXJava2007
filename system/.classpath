@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="FYProjStary/src"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/max/My Documents/University/fyProject/derby stuff/tickets.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/max/My Documents/University/fyProject/derby stuff/derby.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/max/My Documents/University/fyProject/derby stuff/derbyclient.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/max/My Documents/University/fyProject/derby stuff/derbynet.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/max/My Documents/University/fyProject/derby stuff/derbytools.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/max/My Documents/University/fyProject/derby stuff/forms-1.0.5.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/max/My Documents/University/fyProject/derby stuff/log4j-1.2.13.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/max/My Documents/University/fyProject/derby stuff/TableLayout.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/max/My Documents/University/fyProject/com.zip"/>
+	<classpathentry kind="output" path="FYProjStary/bin"/>
+</classpath>

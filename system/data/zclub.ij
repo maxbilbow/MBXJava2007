@@ -1,0 +1,29 @@
+connect 'jdbc:derby:data/temp;create=true';
+
+create table Member (
+  id char(7) not null,
+  pin char(5) not null,
+  lastname varchar(30) not null,
+  firstname varchar(20) not null,
+  primary key (id) 
+);
+
+insert into Member values
+  ( 'admin', 'admin', 'Max',      'Bilbow' );
+
+create table Finance (
+  id integer not null generated always as identity,
+  date date not null,
+  in_out int not null,
+  details varchar(40),
+  amount double not null,
+  primary key (id)
+);
+
+insert into Finance(in_out, amount) values
+  ( '1',	1250.00 ),
+  ( '0',	500.00 ),
+  ( '1',	500.00 );
+
+
+disconnect;

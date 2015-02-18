@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/max/My Documents/University/fyProject/usefull/derby_ui_plugin_1.1.0.zip"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/max/My Documents/University/fyProject/usefull/derby_core_plugin_10.1.2.zip"/>
+	<classpathentry kind="lib" path="C:/Program Files/eclipse-ext/derby/eclipse/plugins/org.apache.derby.core_10.1.2/derbytools.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/max/My Documents/University/fyProject/usefull/mysql-connector-java-3.1.6-bin.zip"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/max/My Documents/University/fyProject/usefull/hsqldb.zip"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

@@ -1,0 +1,53 @@
+CONNECT 'jdbc:derby:data/books';
+
+CREATE TABLE Publisher (
+  id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,
+  name VARCHAR(20) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+INSERT INTO Publisher(name) VALUES
+  'Addison-Wesley',
+  'APress',
+  'McGraw-Hill',
+  'OReilly',
+  'Pearson',
+  'Prentice Hall',
+  'Syngress',
+  'Wiley';
+
+CREATE TABLE Book (
+  id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,
+  author VARCHAR(20) NOT NULL,
+  title VARCHAR(60) NOT NULL,
+  pub_id INTEGER,
+  pub_year INTEGER,
+  PRIMARY KEY (id),
+  FOREIGN KEY (pub_id) REFERENCES Publisher(id)
+);
+
+INSERT INTO Book(author, title, pub_id, pub_year) VALUES
+  ('Ambler S','Agile Modeling',8,2002),
+  ('Ammeraal L','STL For C++ Programmers',8,1997),
+  ('Bloch J','Effective Java',1,2001),
+  ('Chappell D','Understanding .NET',1,2002),
+  ('Darwin IF','Java Cookbook',4,2001),
+  ('Eckel B','Thinking in Java (3rd ed.)',6,2002),
+  ('Efford N','Digital Image Processing',5,2000),
+  ('Grosso W','Java RMI',4,2002),
+  ('Harold ER','Java Network Programming (3rd ed.)',4,2004),
+  ('Horstmann C','Big Java',8,2002),
+  ('Huseby S','Innocent Code',8,2003),
+  ('Knudsen J','Java Cryptography',4,1998),
+  ('Long J','Google Hacking for Penetration Testers',7,2004),
+  ('Martelli A','Python in a Nutshell',4,2004),
+  ('Mitnick K','The Art of Deception',8,2004),
+  ('Nolan G','Decompiling Java',2,2004),
+  ('Oaks S','Java Security (2nd ed.)',4,2001),
+  ('Seacord R','Secure Coding in C and C++',1,2006),
+  ('Skoudis E','Malware: Fighting Malicious Code',6,2004),
+  ('Spitzner L','Honeypots: Tracking Hackers',1,2002),
+  ('Tanenbaum A','Modern Operating Systems (2nd ed.)',6,2001),
+  ('Wake W','Extreme Programming Explored',1,2002);
+
+DISCONNECT;

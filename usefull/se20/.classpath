@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/max/My Documents/University/fyProject/usefull/tickets.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/max/My Documents/University/fyProject/usefull/TableLayout.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/max/My Documents/University/fyProject/scripts/postgresql-8.2dev-501.jdbc3.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/max/My Documents/University/fyProject/usefull/se20/ex7.jar"/>
+	<classpathentry kind="lib" path="/se20-2/TableLayout.jar"/>
+	<classpathentry kind="lib" path="/se20-2/tickets.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/max/My Documents/University/fyProject/usefull/derby_core_plugin_10.1.2.zip"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/max/My Documents/University/fyProject/usefull/derby_ui_plugin_1.1.0.zip"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

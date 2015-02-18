@@ -1,0 +1,2 @@
+#!/bin/bash
+java -Dij.protocol=jdbc:derby: org.apache.derby.tools.ij $*

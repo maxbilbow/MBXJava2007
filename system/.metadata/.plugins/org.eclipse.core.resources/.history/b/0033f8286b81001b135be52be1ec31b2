@@ -1,0 +1,250 @@
+package se20.ex2;
+
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.JOptionPane;
+
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
+
+
+/**
+ * Creates an in-memory HSQL database.
+ *
+ * <p>The tables of the database and their contents are specified in
+ * a plain text file with the same name as the database, plus the
+ * suffix '.db'.  A blank line separates the specification for each
+ * table.  The first line of a table specification is the name of the
+ * table, and the second line is a description of its columns, written
+ * as it would appear between parentheses of an SQL CREATE TABLE
+ * statement.  The remaining lines (until the next blank line or the
+ * end of the file) specify the data for each row of the table, as
+ * comma-separated values.</p>
+ *
+ * @author Nick Efford
+ * @version 1.2 (2005-11-21)
+ */
+public class HsqlDatabase {
+
+
+  // Static stuff
+
+  private static final String JDBC_DRIVER = "org.hsqldb.jdbcDriver";
+  private static final String SUFFIX = ".db";
+  private static String dataDirectory = ".";
+  private static Logger log;
+
+  static {
+    log = Logger.getLogger(HsqlDatabase.class);
+    String logPattern = "[%4r ms] %C %p - %m%n";
+    PatternLayout layout = new PatternLayout(logPattern);
+    log.addAppender(new ConsoleAppender(layout));
+  }
+
+
+  // Instance variables
+
+  private String databaseName;
+  private Connection connection;
+
+
+  /**
+   * Creates an HsqlDatabase with a given name.
+   *
+   * @param name Name of database
+   * @throws ClassNotFoundException if driver could not be found
+   * @throws IOException if there was a problem reading data from file
+   * @throws SQLException if there was a problem with database interaction
+   */
+  public HsqlDatabase(String name)
+   throws ClassNotFoundException, IOException, SQLException
+  {
+    Class.forName(JDBC_DRIVER);
+    log.info("Driver loaded");
+
+    databaseName = name;
+    connection =
+     DriverManager.getConnection("jdbc:hsqldb:mem:" + name, "sa", "");
+    log.info("Connection established");
+
+    createTables(name);
+  }
+
+
+  /**
+   * Returns the location of the data files used to construct an HsqlDatabase.
+   *
+   * @return Name of data directory
+   */
+  public static String getDataDirectory()
+  {
+    return dataDirectory;
+  }
+
+
+  /**
+   * Sets the location of the data files used to construct an HsqlDatabase.
+   *
+   * @param directory Name of data directory
+   */
+  public static void setDataDirectory(String directory)
+  {
+    dataDirectory = directory;
+  }
+
+
+  /**
+   * @return Name of the database managed by this HsqlDatabase
+   */
+  public String getDatabaseName()
+  {
+    return databaseName;
+  }
+
+
+  /**
+   * @return database connection managed by this HsqlDatabase
+   */
+  public Connection getConnection()
+  {
+    return connection;
+  }
+
+
+  /**
+   * Creates tables for the specified database, using data from a file.
+   *
+   * @param name Name of database
+   * @throws FileNotFoundException if the file cannot be accessed
+   * @throws IOException if there was a problem reading from the file
+   * @throws SQLException if there was a problem with database interaction
+   */
+  private void createTables(String name)
+    throws FileNotFoundException, IOException, SQLException
+  {
+    String filename = name + SUFFIX;
+    File file = new File(dataDirectory, filename);
+    BufferedReader input = new BufferedReader(new FileReader(file));
+
+    String tableName;
+    while ((tableName = createTable(input)) != null)
+      log.info(String.format("Created table '%s'", tableName));
+
+    input.close();
+  }
+
+
+  /**
+   * Creates a single database table from data supplied by a BufferedReader.
+   *
+   * @param input Source of data for the table
+   * @return Name of table that was created, or null
+   * @throws IOException if there was a problem reading data
+   * @throws SQLException if there was a problem with database interaction
+   */
+  private String createTable(BufferedReader input)
+   throws IOException, SQLException
+  {
+    String tableName = input.readLine();
+    if (tableName == null || tableName.length() == 0)
+      return null;
+
+    // Turn off auto-commit and get a Statement object
+
+    boolean autoCommitState = connection.getAutoCommit();
+    connection.setAutoCommit(false);
+    Statement statement = connection.createStatement();
+
+    // Construct and queue a command to create the table
+
+    String line = input.readLine();
+    String command = String.format("CREATE TABLE %s (%s)", tableName, line);
+    statement.addBatch(command);
+
+    // Construct and queue commands to add data to the table
+
+    while ((line = input.readLine()) != null && line.length() != 0) {
+      command = String.format("INSERT INTO %s VALUES (%s)", tableName, line);
+      statement.addBatch(command);
+    }
+
+    // Execute queued commands as a batch and commit changes
+
+    statement.executeBatch();
+    statement.close();
+
+    connection.commit();
+    connection.setAutoCommit(autoCommitState);
+
+    return tableName;
+  }
+
+
+  /**
+   * Test of HsqlDatabase class.
+   *
+   * <p>The program should be run with one or two command-line arguments.
+   * The first, required argument is the name of a database.  The second,
+   * optional argument is a string representing an SQL query.  If the
+   * latter is not supplied, an input dialog is created to collect the
+   * query from the user.</p>
+   *
+   * @param args Command-line arguments
+   */
+  public static void main(String[] args)
+  {
+    try {
+      // Create database and connect to it
+
+      // Uncomment line below to suppress logging
+      //Logger.getRootLogger().setLevel(Level.OFF);
+      HsqlDatabase db = new HsqlDatabase(args[0]);
+      Connection connection = db.getConnection();
+      Statement statement = connection.createStatement();
+
+      // Perform query and gather results
+
+      ResultSet results = null;
+      if (args.length > 1)
+        results = statement.executeQuery(args[1]);
+      else {
+        String query = JOptionPane.showInputDialog("Enter SQL query");
+        results = statement.executeQuery(query);
+      }
+
+      // Display results
+
+      int columns = results.getMetaData().getColumnCount();
+      while (results.next()) {
+        for (int i = 1; i <= columns; ++i) {
+          if (i > 1)
+            System.out.print(", ");
+          System.out.print(results.getString(i));
+        }
+        System.out.println();
+      }
+
+      results.close();
+      statement.close();
+      connection.close();
+    }
+    catch (Exception error) {
+      error.printStackTrace();
+      System.exit(1);
+    }
+  }
+
+
+}

@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<project name="SE20_Coursework" basedir="." default="compile">
+
+  <property name="src.dir" value="src" />
+  <property name="build.dir" value="bin" />
+
+  <property name="SoC.lib.dir" value="/home/csunix/se20/lib" />
+  <!-- change my.lib.dir to location where you've installed JAR files -->   
+  <property name="my.lib.dir" value="${user.home}/teaching/modules/SE20/cwk/libs" />
+  <condition property="lib.dir" value="${SoC.lib.dir}">
+    <available file="${SoC.lib.dir}" type="dir" />
+  </condition>
+  <condition property="lib.dir" value="${my.lib.dir}">
+    <available file="${my.lib.dir}" type="dir" />
+  </condition>
+
+  <property name="lib.log4j" value="${lib.dir}/log4j-1.2.13.jar" />
+  <property name="lib.forms" value="${lib.dir}/forms-1.0.5.jar" />
+  <property name="lib.tablelayout" value="${lib.dir}/TableLayout.jar" />
+  <property name="lib.derby" value="${lib.dir}/derby.jar" />
+  <property name="lib.derbytools" value="${lib.dir}/derbytools.jar" />
+
+  <property name="data.dir" value="data" />
+  <property name="database" value="${data.dir}/zclub" />
+  <property name="database.script" value="${data.dir}/zclub.ij" />
+  <property name="graphics.dir" value="graphics" />
+  <property name="doc.dir" value="doc" />
+  <property name="zip.name" value="cwk2.zip" />   
+
+  <path id="project.classpath">
+    <pathelement location="${build.dir}" />
+    <pathelement location="${lib.derby}" />
+    <pathelement location="${lib.log4j}" />
+    <pathelement location="${lib.forms}" />
+    <pathelement location="${lib.tablelayout}" />
+  </path>
+
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${build.dir}" />
+    <mkdir dir="${doc.dir}" />
+  </target>
+
+  <target name="data" description="--  Recreates the database">
+    <delete quiet="true" dir="${database}" />
+    <java fork="true" classname="org.apache.derby.tools.ij">
+      <jvmarg value="-Djdbc.drivers=org.apache.derby.jdbc.EmbeddedDriver" />
+      <arg value="${database.script}" />
+      <classpath>
+        <pathelement location="${lib.derbytools}" />
+        <pathelement location="${lib.derby}" />
+      </classpath>
+    </java>
+  </target>
+
+  <target name="compile" depends="init" description="--  Compiles your code">
+    <javac srcdir="${src.dir}" destdir="${build.dir}">
+      <classpath refid="project.classpath" />
+    </javac>
+  </target>
+
+  <target name="run" depends="compile" description="--  Runs application">
+    <java fork="true" classname="se20.coursework.TicketMaster">
+      <classpath refid="project.classpath" />
+    </java>
+  </target>
+
+  <target name="doc" depends="compile"
+   description="--  Generates documentation from your code">
+    <javadoc destdir="${doc.dir}"
+     author="true" version="true" linksource="true"
+     windowtitle="${user.name}" doctitle="${user.name}">
+      <package name="se20.coursework" />
+      <sourcepath location="${src.dir}" />
+      <classpath refid="project.classpath" />
+    </javadoc>
+  </target>
+
+  <target name="zip" depends="doc"
+   description="--  Creates a Zip archive for submission">
+    <zip destfile="${zip.name}">
+      <zipfileset dir="." includes="build.xml" />
+      <zipfileset dir="${src.dir}" prefix="${src.dir}" />   
+      <zipfileset dir="${graphics.dir}" prefix="${graphics.dir}" />
+      <zipfileset dir="${data.dir}" prefix="${data.dir}" includes="zclub.ij" />
+      <zipfileset dir="${doc.dir}" prefix="${doc.dir}" />
+    </zip>
+  </target>
+
+  <target name="clean"
+   description="--  Removes compiled code, docs and Zip archive">
+    <delete dir="${build.dir}" />
+    <delete dir="${doc.dir}" />
+    <delete file="${zip.name}" />
+  </target>
+
+</project>

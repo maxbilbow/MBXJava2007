@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<session version="1.0">
+<refactoring comment="Rename field 'type' in 'forms.AddTransaction' to 'typeL'&#13;&#10;- Original element: 'forms.AddTransaction.type'&#13;&#10;- Renamed element: 'forms.AddTransaction.typeL'&#13;&#10;- Update references to refactored element&#13;&#10;- Update textual occurrences in comments and strings" delegate="false" deprecate="true" description="Rename field 'type'" flags="589830" getter="false" id="org.eclipse.jdt.ui.rename.field" input="/src&lt;forms{AddTransaction.java[AddTransaction^type" name="typeL" references="true" setter="false" stamp="1162161812968" textual="false" version="1.0"/>
+</session>

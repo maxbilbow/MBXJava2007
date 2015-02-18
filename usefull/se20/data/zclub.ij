@@ -1,0 +1,76 @@
+connect 'jdbc:derby:data/zclub;create=true';
+
+create table Member (
+  id char(7) not null,
+  pin char(5) not null,
+  lastname varchar(30) not null,
+  firstname varchar(20) not null,
+  primary key (id) 
+);
+
+insert into Member values
+  ( 'Z060101', '14745', 'Smith',      'Jonathan' ),
+  ( 'Z060102', '76122', 'Matthews',   'Karl'     ),
+  ( 'Z060103', '12345', 'Riley',      'Samantha' ),
+  ( 'Z060104', '99410', 'Davies',     'Peter'    ),
+  ( 'Z060105', '55184', 'Harrison',   'Sarah'    ),
+  ( 'Z060106', '76230', 'Johnson',    'Victoria' ),
+  ( 'Z060107', '10101', 'Weisz',      'Martin'   ),
+  ( 'Z060108', '44107', 'Olombe',     'Frederic' ),
+  ( 'Z060109', '54321', 'Seward',     'Matthew'  ),
+  ( 'Z060110', '70941', 'Pennington', 'Jane'     );
+
+create table Room (
+  id integer not null generated always as identity,
+  name varchar(20) not null,
+  capacity integer not null,
+  primary key (id)
+);
+
+insert into Room(name, capacity) values
+  ( 'Main Hall',         1250 ),
+  ( 'The Blue Room',      500 ),
+  ( 'The Green Room',     500 ),
+  ( 'The Cockpit',        200 ),
+  ( 'The Chill-Out Zone', 200 );
+
+create table Event (
+  id integer not null generated always as identity,
+  date date not null,
+  time time not null,
+  performer varchar(40) not null,
+  room_id integer not null,
+  price double not null,
+  tickets_left integer not null,
+  primary key (id),
+  foreign key (room_id) references Room(id)
+);
+
+insert into Event(date, time, performer, room_id, price, tickets_left) values
+  ( '2006-11-12', '19:00', 'The Bluetones',            2, 13.50,    2 ),
+  ( '2006-11-13', '19:00', 'Bullet for My Valentine',  3, 16.25,   28 ),
+  ( '2006-11-20', '19:30', 'The Feeling',              3, 13.00,    0 ),
+  ( '2006-11-26', '19:00', 'Four Day Hombre',          4,  7.00,   99 ),
+  ( '2006-11-28', '19:30', 'The Dirty Pretty Things',  2, 16.25,   46 ),
+  ( '2006-11-29', '19:30', 'The Magic Numbers',        1, 17.25, 1213 ),
+  ( '2006-11-30', '19:30', 'DJ Shadow',                3, 19.75,  414 ),
+  ( '2006-12-03', '19:30', 'Tom McRae',                3, 15.00,  250 ),
+  ( '2006-12-04', '19:30', 'The Wonder Stuff',         2, 17.00,  184 ),
+  ( '2006-12-06', '19:30', 'The Human League',         1, 23.75,    0 ),
+  ( '2006-12-07', '19:30', 'Lostprophets',             1, 17.75,  143 ),
+  ( '2006-12-08', '19:30', 'Paolo Nutini',             3, 14.75,   72 ),
+  ( '2006-12-10', '20:00', 'Deft Leppard',             4,  7.00,  103 ),
+  ( '2006-12-12', '19:00', 'Saw Doctors',              1, 22.00, 1147 ),
+  ( '2006-12-17', '19:00', 'James Morrison',           2, 12.50,  172 ),
+  ( '2006-12-24', '20:00', 'Kings of Queen',           1, 25.00,    3 ),
+  ( '2007-01-24', '19:00', 'Get Cape, Wear Cape, Fly', 3,  9.00,  227 ),
+  ( '2007-01-28', '19:00', 'Architects',               5,  6.00,  139 ),
+  ( '2007-02-01', '20:00', 'Dead Hot Chili Peppers',   5,  5.00,  177 ),
+  ( '2007-02-14', '19:30', 'Bowling For Soup',         3, 16.50,  350 ),
+  ( '2007-03-11', '20:00', 'The Bootleg Beatles',      2, 15.50,  212 ),
+  ( '2007-03-16', '19:30', 'Corinne Bailey Rae',       1, 21.25,  218 ),
+  ( '2007-03-26', '19:00', 'My Chemical Romance',      2, 17.50,  109 ),
+  ( '2007-03-29', '19:30', 'Barenaked Ladies',         1, 23.75,  770 ),
+  ( '2007-05-13', '19:30', 'The Waterboys',            1, 22.50,  955 );
+
+disconnect;

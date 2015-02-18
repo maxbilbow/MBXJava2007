@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="se20/src"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="se20/ex7.jar"/>
+	<classpathentry kind="lib" path="TableLayout.jar"/>
+	<classpathentry kind="lib" path="tickets.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="se20/bin"/>
+</classpath>
